@@ -29,6 +29,7 @@ class Array2xml
 	private $emptyElementSyntax = 1;
 	private $filterNumbers = FALSE;
 	private $tagsToFilter = array();
+	private $dtd = array();
 
 	const EMPTY_SELF_CLOSING    = 1;
 	const EMPTY_FULL            = 2;
@@ -72,6 +73,15 @@ class Array2xml
 	{
 		$this->writer->openMemory();
 		$this->writer->startDocument($this->version, $this->encoding);
+
+		if(!empty($this->dtd)){
+			$this->writer->writeDtd(
+				$this->dtd['name'],
+				$this->dtd['publicId'],
+				$this->dtd['systemId']
+			);
+		}
+
 		$this->writer->startElement($this->rootName);
 		if (!empty($this->rootAttrs) and is_array($this->rootAttrs))
 		{
@@ -306,6 +316,7 @@ class Array2xml
 	 *
 	 * @access   public
 	 * @param    bool|array
+	 * @throws InvalidArgumentException
 	 * @return   void
 	 */
 	public function setFilterNumbersInTags($data)
@@ -323,6 +334,23 @@ class Array2xml
 			throw new \InvalidArgumentException('$data must be a type of boolean or array');
 		}
 	}
+
+	// --------------------------------------------------------------------
+	/**
+	 * DTD Setter
+	 * @see http://php.net/manual/en/function.xmlwriter-write-dtd.php
+	 *
+	 * @param string $name
+	 * @param string $publicId
+	 * @param string $systemId
+	 *
+	 */
+	function setDTD($name, $publicId, $systemId){
+		$this->dtd['name']     = $name;
+		$this->dtd['publicId'] = $publicId;
+		$this->dtd['systemId'] = $systemId;
+	}
+
 
 	// --------------------------------------------------------------------
 
