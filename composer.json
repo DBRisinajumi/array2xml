@@ -8,5 +8,10 @@
         {
             "name": "Anton Vasylyev"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {
+            "Dbr\\Array2Xml\\": ""
+        }
+    }
 }
